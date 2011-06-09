@@ -9,16 +9,19 @@ import System.Environment (getArgs, getProgName)
 import System.FilePath (replaceExtension)
 
 import Text.Blaze.Renderer.Utf8 (renderHtml)
+import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 
 import Criterion.ToHtml.Html
 import Criterion.ToHtml.Result
+import Paths_criterion_to_html (getDataFileName)
 
 toHtml' :: FilePath -> FilePath -> IO ()
 toHtml' csv html = do
+    js <- B.readFile =<< getDataFileName "criterion-to-html.js"
     putStrLn $ "Parsing " ++ csv
     csv' <- parseCriterionCsv <$> readFile csv
-    BL.writeFile html $ renderHtml $ report csv'
+    BL.writeFile html $ renderHtml $ report js csv'
     putStrLn $ "Wrote " ++ html
 
 main :: IO ()

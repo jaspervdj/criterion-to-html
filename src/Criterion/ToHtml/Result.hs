@@ -1,10 +1,17 @@
 -- | Parse Criterion results
 --
+{-# LANGUAGE OverloadedStrings #-}
 module Criterion.ToHtml.Result
     ( Result (..)
+    , ResultGroup (..)
     , parseCriterionCsv
-    , normalizeMeans
+    , groupResults
     ) where
+
+import System.FilePath (splitFileName)
+import qualified Data.Map as M
+
+import Data.Aeson (ToJSON (toJSON), object, (.=))
 
 import Criterion.ToHtml.Csv
 
@@ -15,10 +22,25 @@ data Result = Result
     , resultMean :: Double
     }
 
+instance ToJSON Result where
+    toJSON (Result name mean) = object ["name" .= name, "mean" .= mean]
+
+-- | A criterion result group
+--
+data ResultGroup = ResultGroup
+    { resultGroupName    :: String
+    , resultGroupResults :: [Result]
+    }
+
+instance ToJSON ResultGroup where
+    toJSON (ResultGroup name results) =
+        object ["name" .= name, "results" .= results]
+
 -- | Parse a Criterion CSV file
 --
-parseCriterionCsv :: String -> [Result]
-parseCriterionCsv = map parseCriterionResult . drop 1 . parseCsv
+parseCriterionCsv :: String -> [ResultGroup]
+parseCriterionCsv =
+    groupResults . map parseCriterionResult . drop 1 . parseCsv
 
 -- | Parse a single result
 --
@@ -27,9 +49,13 @@ parseCriterionResult (name : mean : _) = Result name (read mean)
 parseCriterionResult _                 = error
     "Criterion.ToHtml.Parse.parseCriterionResult: invalid CSV file"
 
-normalizeMeans :: [Result] -> [(Result, Double)]
-normalizeMeans []      = []
-normalizeMeans results = map normalize results
+-- | Group results
+--
+groupResults :: [Result] -> [ResultGroup]
+groupResults =
+    map toGroup . M.toList . M.fromListWith (flip (++)) . map splitResult
   where
-    normalize result = (result, resultMean result / max')
-    max' = maximum $ map resultMean results
+    toGroup = uncurry ResultGroup
+    splitResult (Result name mean) =
+        let (group, name') = splitFileName name
+        in (group, [Result name' mean])
