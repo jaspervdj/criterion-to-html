@@ -17,7 +17,7 @@ barplot overview. If there's anything you'd like me to add, please create an
 Usage
 -----
 
-To generate the CSV file, run your criterion benchmark using the @-u@ flag:
+To generate the CSV file, run your criterion benchmark using the `-u` flag:
 
     some-criterion-benchmark -u results.csv
 
