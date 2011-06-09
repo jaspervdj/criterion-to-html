@@ -2,7 +2,7 @@
 --
 {-# LANGUAGE OverloadedStrings #-}
 module Criterion.ToHtml.Html
-    ( table
+    ( report
     ) where
 
 import Data.List (sortBy)
@@ -16,15 +16,21 @@ import qualified Text.Blaze.Html5.Attributes as A
 
 import Criterion.ToHtml.Result
 
-table :: [Result] -> Html
-table results = H.docTypeHtml $ do
+report :: [Result] -> Html
+report results = H.docTypeHtml $ do
     H.head $ H.title "Criterion results"
-    H.body $ do 
-        H.table ! A.style "width: 100%;" $ do
-            H.tr $ do
-                H.th "Name"
-                H.th "Mean"
-            mapM_ row $ normalizeMeans $ sortBy (comparing resultMean) results
+    H.body $ do
+        H.h1 "Results"
+        table results
+        H.h1 "Sorted"
+        table $ sortBy (comparing resultMean) results
+
+table :: [Result] -> Html
+table results = H.table ! A.style "width: 100%;" $ do
+    H.tr $ do
+        H.th "Name"
+        H.th "Mean"
+    mapM_ row $ normalizeMeans results
 
 row :: (Result, Double) -> Html
 row (Result name _, n) = H.tr $ do

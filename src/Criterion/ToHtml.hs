@@ -18,7 +18,7 @@ toHtml' :: FilePath -> FilePath -> IO ()
 toHtml' csv html = do
     putStrLn $ "Parsing " ++ csv
     csv' <- parseCriterionCsv <$> readFile csv
-    BL.writeFile html $ renderHtml $ table csv'
+    BL.writeFile html $ renderHtml $ report csv'
     putStrLn $ "Wrote " ++ html
 
 main :: IO ()
