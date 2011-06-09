@@ -9,7 +9,7 @@ Category:      Development
 Build-type:    Simple
 Homepage:      http://github.com/jaspervdj/criterion-to-html
 Bug-Reports:   http://github.com/jaspervdj/criterion-to-html/issues
-Cabal-version: >= 1.2
+Cabal-version: >= 1.6
 
 Description:
   A program to convert criterion output (a CSV file) to an HTML which has some
