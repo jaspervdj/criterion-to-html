@@ -5,7 +5,9 @@ module Criterion.ToHtml.Html
     ( table
     ) where
 
+import Data.List (sortBy)
 import Data.Monoid (mappend)
+import Data.Ord (comparing)
 import Text.Printf (printf)
 
 import Text.Blaze (Html, toHtml, toValue, preEscapedString, (!))
@@ -22,7 +24,7 @@ table results = H.docTypeHtml $ do
             H.tr $ do
                 H.th "Name"
                 H.th "Mean"
-            mapM_ row $ normalizeMeans results
+            mapM_ row $ normalizeMeans $ sortBy (comparing resultMean) results
 
 row :: (Result, Double) -> Html
 row (Result name _, n) = H.tr $ do
