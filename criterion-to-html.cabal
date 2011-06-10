@@ -1,10 +1,10 @@
 Name:          criterion-to-html
-Version:       0.0.0.1
+Version:       0.0.0.2
 Synopsis:      Convert criterion output to HTML reports
 License:       BSD3
 License-file:  LICENSE
-Author:        Jasper Van der Jeugt
-Maintainer:    m@jaspervdj.be
+Author:        Jasper Van der Jeugt <m@jaspervdj.be>
+Maintainer:    Jasper Van der Jeugt <m@jaspervdj.be>
 Category:      Development
 Build-type:    Simple
 Homepage:      http://github.com/jaspervdj/criterion-to-html
