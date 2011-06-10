@@ -30,4 +30,20 @@ report js results = H.docTypeHtml $ do
             unsafeLazyByteString $ encode results
             ";"
         H.script ! A.type_ "text/javascript" $ unsafeByteString js
+        H.style ! A.type_ "text/css" $ do
+            "html {"
+            "    font-size: 16px;"
+            "    font-family: sans-serif;"
+            "}"
+            "body {"
+            "    width: 600px;"
+            "    margin: 0px auto 0px auto;"
+            "}"
+            "div.controls {"
+            "    text-align: center;"
+            "    margin-bottom: 10px;"
+            "}"
+            "div.controls input {"
+            "    margin-right: 20px;"
+            "}"
     H.body mempty
