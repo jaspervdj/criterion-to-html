@@ -2,13 +2,13 @@
 function createResults(group) {
     /* If attributes are not set, we should set them */
     group.sort = group.sort ? true : false;
-    group.log  = group.log  ? true : false;
 
-    var div = $(document.createElement('div'));
-    div.append($(document.createElement('h2')).html(group.name));
+    var div = $(document.createElement('div')).addClass('results');
 
     var controls = $(document.createElement('div')).addClass('controls');
     div.append(controls);
+
+    div.append($(document.createElement('h2')).html(group.name));
 
     /* Create a box and label to sort the results */
     var sortBox = $(document.createElement('input'))
@@ -27,26 +27,9 @@ function createResults(group) {
         div.replaceWith(createResults(group));
     });
 
-    /* Create a box and label to log the results */
-    var logBox = $(document.createElement('input'))
-        .attr('type', 'checkbox')
-        .attr('id', 'log-' + sanitizeName(group.name))
-        .attr('checked', group.log);
-    var logLabel = $(document.createElement('label'))
-        .attr('for', 'log-' + sanitizeName(group.name))
-        .html('Logarithmic scale');
-    controls.append(logLabel);
-    controls.append(logBox);
-
-    /* When the log box is changed, we need to reset this div */
-    logBox.click(function() {
-        group.log = logBox.attr('checked');
-        div.replaceWith(createResults(group));
-    });
-
     /* Create an array copy in order to sort them */
     var results = group.results.slice(0);
-    prepareResults(results, group.sort, group.log);
+    prepareResults(results, group.sort);
     for(i in results) div.append(createResult(results[i]));
 
     return div;
@@ -95,19 +78,15 @@ function barColor(normalizedMean) {
 }
 
 /* Prepare results */
-function prepareResults(results, sort, log) {
+function prepareResults(results, sort) {
     /* Sort if necessary */
     if(sort) {
         results.sort(function(r1, r2) { return r1.mean - r2.mean; });
     }
 
-    /* Modifier function */
-    var f = function(x) { return x; };
-    if(log) f = function (x) { return Math.log(1 + x); };
-
     var max = 0;
-    for(i in results) if(results[i].mean > max) max = f(results[i].mean);
-    for(i in results) results[i].normalizedMean = f(results[i].mean) / max;
+    for(i in results) if(results[i].mean > max) max = results[i].mean;
+    for(i in results) results[i].normalizedMean = results[i].mean / max;
 }
 
 /* Main handler, create the page */

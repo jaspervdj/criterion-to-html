@@ -40,10 +40,9 @@ report js results = H.docTypeHtml $ do
             "    margin: 0px auto 0px auto;"
             "}"
             "div.controls {"
-            "    text-align: center;"
-            "    margin-bottom: 10px;"
+            "    float: right;"
             "}"
-            "div.controls input {"
-            "    margin-right: 20px;"
+            "div.results {"
+            "    margin-bottom: 50px;"
             "}"
     H.body mempty
