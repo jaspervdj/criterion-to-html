@@ -8,7 +8,7 @@ import Control.Applicative ((<$>))
 import System.Environment (getArgs, getProgName)
 import System.FilePath (replaceExtension)
 
-import Text.Blaze.Renderer.Utf8 (renderHtml)
+import Text.Blaze.Html.Renderer.Utf8 (renderHtml)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 

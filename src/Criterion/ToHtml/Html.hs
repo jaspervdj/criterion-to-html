@@ -10,7 +10,8 @@ import Data.Monoid (mempty)
 
 import Data.Aeson (encode)
 import Data.ByteString (ByteString)
-import Text.Blaze (Html, unsafeLazyByteString, unsafeByteString, (!))
+import Text.Blaze (unsafeLazyByteString, unsafeByteString, (!))
+import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 
